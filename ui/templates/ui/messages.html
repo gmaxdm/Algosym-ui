@@ -1,0 +1,14 @@
+{% if messages %}
+    <div class="s__messages">
+    {% for m in messages %}
+        <p>{{ m }}</p>
+    {% endfor %}
+    </div>
+<script>
+    $(function() {
+        window.setTimeout(function() {
+            $('.s__messages').fadeOut(250);
+        }, 3000);
+    });
+</script>
+{% endif %}

@@ -1,0 +1,79 @@
+body {
+    background-color: #F4F8FC;
+}
+
+.sidebar {
+    background-color: #0218A8;
+    border-right: 1px solid #DFE4EA;
+}
+
+.main .title {
+    background-color: #fff;
+    border-bottom: 1px solid #DFE4EA;
+}
+
+
+.main .title .title-input {
+    background-color: #fff;
+    color: #364B61;
+}
+
+.main .title .title-input:hover {
+    background-color: rgba(66,84,106,0.1);
+}
+
+.code-area-container {
+    border-bottom: 1px solid #DFE4EA;
+}
+
+.code-area {
+    background-color: #F4F8FC;
+    color: #5B6E7F;
+}
+
+.line-num {
+    color: #D2DAE6;
+    border-right: 1px solid #DFE4EA;
+}
+
+.run-btn, .delete-btn {
+    color: #5B6E7F;
+}
+
+.run-btn:hover, .delete-btn:hover {
+    background-color: rgba(66,84,106,0.1);
+    cursor: pointer;
+}
+
+.output-container {
+    background-color: #fff;
+    color: #5B6E7F;
+}
+
+.output {
+    border-right: 2px solid #DFE4EA;
+}
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: rgba(66,84,106,0.1);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(66,84,106,0.1);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(66,84,106,0.3);
+    cursor: default;
+  }
+
+  @media (max-width: 500px) {
+
+    .output {
+        border-right: none;
+        border-bottom: 2px solid #DFE4EA;
+    }
+}

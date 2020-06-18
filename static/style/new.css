@@ -1,0 +1,449 @@
+body {
+    background-color: #1F1F1F;
+    color: #fff;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    position: relative;
+    height: 100%;
+    width: 300px;
+    max-width: 300px;
+    background-color: #242424;
+    border-right: 2px solid #141414;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    left: 0;
+}
+
+#db-logo {
+    width: 50px;
+    height: 50px;
+    margin: 20px;
+}
+
+#db-logo .st0 {
+    fill: #fff;
+}
+
+.sidebar .files-list {
+    height: 100%;
+}
+
+.sidebar .item {
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    cursor: pointer;
+    padding: 6px 20px 4px 20px;
+    align-content: center;
+    margin-bottom: 2px;
+    transition: 0.3s all;
+}
+
+.sidebar .item.selected {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar .item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar .item svg {
+    fill: rgba(255,255,255,0.6);
+    width: 24px;
+    height: 24px;
+    margin: 1px 4px 0 0;
+}
+
+.sidebar .item span {
+    font-weight: 300;
+    letter-spacing: 0.02rem;
+}
+
+.sidebar .item.btn-new {
+    margin-top: 10px;
+    padding: 7px 20px;
+}
+
+.sidebar .item.btn-new svg {
+    fill: #fff;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 1px;
+    margin-right: 8px;
+    margin-left: 2px;
+}
+
+.sidebar .item.btn-new span {
+    font-weight: 600;
+}
+
+.account-info {
+    padding: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.account-info .email {
+    color: #fff;
+}
+
+.logout-btn a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.account-info .logout-btn {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.3s all;
+}
+
+.account-info .logout-btn:hover {
+    opacity: 1;
+}
+
+.account-info #logout-icon {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+    margin-top: 3px;
+    margin-right: 5px;
+}
+
+/* Main */
+.main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title */
+.main .title {
+    display: flex;
+    flex-direction: row;
+    background-color: #141414;
+    border-bottom: 2px solid #141414;
+}
+
+.main .title .title-input {
+    padding: 20px;
+    font-size: 1.5rem;
+    width: 100%;
+    background-color: #141414;
+    border: none;
+    color: #fff;
+    box-sizing: border-box;
+    transition: 0.3s all;
+}
+.main .title .title-input:hover {
+    background-color: #191B1C;
+}
+
+.main .title .title-input:focus {
+    border: none;
+    outline: none;
+}
+
+.run-btn, .delete-btn {
+    padding: 20px;
+    position: relative;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: 0.3s all;
+}
+
+.run-btn:hover,
+.delete-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+    cursor: pointer;
+}
+
+#run-btn-icon, #delete-btn-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+#run-btn-icon {
+    fill: #0DBF73;
+}
+
+#delete-btn-icon {
+    fill: #C61E43;
+}
+
+/* Code area */
+.code-area-container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid #141414;
+    position: relative;
+    padding-left: 57px;
+    /* overflow: hidden; */
+    font-family: monospace;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.line-num {
+    padding: 20px;
+    border-right: 1px solid #2D2D2D;
+    line-height: 1.5rem;
+    text-align: right;
+    color: #686868;
+    position: absolute;
+    margin-left: -57px;
+    height: 100%;
+}
+
+.code-area {
+    font-family: inherit;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: #1F1F1F;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    box-sizing: border-box;
+    padding: 20px;
+    line-height: 1.5rem;
+}
+
+.code-area:focus {
+    border: none;
+    outline: none;
+}
+
+/* Output */
+.output-container {
+    min-height: 200px;
+    background-color: #1F1F1F;
+    z-index: 10;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+}
+
+.output {
+    width: 100%;
+    padding: 20px;
+    border-right: 2px solid #141414;
+}
+
+.score-container {
+    min-width: 300px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.scores {
+    font-size: 2rem;
+    font-weight: bold;
+    width: 100%;
+    display: block;
+}
+
+
+/* Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    transition: 0.3s all;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #141414;
+    transition: 0.3s all;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #686868;
+    transition: 0.3s all;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: default;
+    transition: 0.3s all;
+  }
+
+
+
+
+
+@media (max-width: 1000px) {
+    .sidebar {
+        width: 72px;
+        transition: 0.5s all;
+        position: absolute;
+        z-index: 100;
+    }
+    .sidebar #db-logo {
+        width: 30px;
+        height: 30px;
+    }
+    .sidebar .files-list .item {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .sidebar .email {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .sidebar .logout-btn a {
+        text-decoration: none;
+        color: inherit;
+        opacity: 0;
+        pointer-events: none;
+        font-size: 0.01rem;
+    }
+    .sidebar .logout-btn {
+        justify-content: center;
+        padding-left: 6px;
+    }
+    .sidebar #logout-icon {
+        width: 24px;
+        height: 24px;
+    }
+        .sidebar:hover {
+            width: 300px;
+        }
+
+        .sidebar:hover .files-list .item {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .sidebar:hover .email {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .sidebar:hover .logout-btn a {
+            opacity: 1;
+            pointer-events: all;
+            font-size: 1rem;
+        }
+        .sidebar:hover .logout-btn {
+            justify-content: flex-start;
+            padding-left: 0;
+        }
+        .sidebar:hover #logout-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+    .main {
+        padding-left: 72px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+    .content {
+        flex-direction: column;
+    }
+    .line-num {
+        display: none;
+    }
+    .code-area {
+        background-color: #141414;
+    }
+    .code-area-container {
+        padding-left: 0;
+    }
+    .sidebar {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 72px;
+        padding-bottom: 20px;
+        overflow: hidden;
+    }
+    .sidebar:hover {
+        width: 100%;
+        height: 50%;
+    }
+    .main {
+        padding-left: 0;
+        padding-top: 72px;
+    }
+    .title {
+        /* flex-wrap: wrap; */
+    }
+    .main .title .title-input {
+        font-size: 1.2rem;
+    }
+    .run-btn, .delete-btn {
+        padding: 10px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .run-btn span, .delete-btn span {
+        display: none;
+    }
+    #run-btn-icon, #delete-btn-icon {
+        margin-right: 0;
+        width: 24px;
+        height: 24px;
+    }
+    .output-container {
+        flex-direction: column;
+    }
+    .output {
+        height: 100%;
+        border-right: none;
+        border-bottom: 2px solid #141414;
+    }
+    .score-container {
+        text-align: left;
+        display: block;
+    }
+    .score-container span {
+        display: inline-block;
+        width: auto;
+    }
+    .score-container .scores {
+        font-size: 1.2rem;
+        margin-left: 20px;
+    }
+}

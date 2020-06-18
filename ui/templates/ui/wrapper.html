@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <title>Algo Simulator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'style/new.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'style/light.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'style/prism.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style/other.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+  </head>
+
+    <body>
+        {% include 'ui/messages.html' %}
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+
+    <script type="text/javascript" src="{% static 'prism.js' %}" data-manual>
+
+    <script>
+        function selectText() {
+            const input = document.getElementById('name-input');
+            input.focus();
+            input.select();
+        }
+        window.Prism = window.Prism || {};
+        window.Prism.manual = true;
+    </script>
+</html>

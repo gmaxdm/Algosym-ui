@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'style/other.css' %}">
+        <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+    </head>
+    <body>  
+
+        {% include 'ui/messages.html' %}
+
+        {% if form.errors %}
+         {% for f, errs in form.errors.items %}
+         <p>{{f}}</p>
+         <ul class="list-unstyled">
+             {% for err in errs %}
+                 <li class="alert alert-danger">{{ err }}</li>
+             {% endfor %}
+         </ul>
+         {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %} 
+    </body>
+    
+    <script type="text/javascript" src="{% static 'script.js' %}"></script>
+</html>

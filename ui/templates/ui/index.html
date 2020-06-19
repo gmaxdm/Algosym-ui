@@ -40,12 +40,12 @@
                 <form id="fremove" action="{% url 'algo-remove' %}" method="POST" style="visibility: hidden;">{% csrf_token %}<input type="hidden" name="id" value="{{ algo.id }}"></form>
                 <div class="title">
                     <input id="name-input" class="title-input" value="{{ algo.filename }}" onclick="selectText()" />
-                    <span class="run-btn">
+                    <span id="algo-run" class="run-btn">
                         <svg id="run-btn-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 0h48v48H0z" fill="none"/>
                             <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm-4 29V15l12 9-12 9z"/>
                         </svg>
-                        <span id="algo-run">RUN</span>
+                        <span>RUN</span>
                     </span>
                     <span id="algo-remove" class="delete-btn">
                         <svg id="delete-btn-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100">
@@ -56,8 +56,7 @@
                 </div>
                 <div class="code-area-container"><div id="editor" style="display: none;">{{ algo.text }}</div></div>
                 <div class="output-container">
-                    <div class="output">
-                        output
+                    <div id="output" class="output">
                     </div>
                     <div class="score-container">
                         <span>You gained</span>
@@ -115,6 +114,9 @@
             $.post("{% url 'algo-run' %}", {
                 id: {{ algo.id }},
             }, function(data) {
+                if(data.data && data.data.message) {
+                    $("#output").append("<p>"+ data.data.message +"</p>")
+                }
             })
         });
         $('#name-input').on("keypress", function(e) {
@@ -133,7 +135,7 @@
             }
         });
 
-        window.setTimeout(function() {
+        function autosave() {
             if(is_changed()) {
                 var _text = editor.getValue();
                 $.post("{% url 'algo-save' %}", {
@@ -143,7 +145,9 @@
                     initMD5 = MD5(_text);
                 });
             }
-        }, 2000)
+            window.setTimeout(autosave , 2000);
+        };
+        window.setTimeout(autosave , 2000);
     });
 </script>
 {% endblock %}

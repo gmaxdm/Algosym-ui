@@ -1,13 +1,25 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 
 from .models import Algorithm, AlgoSym
 
 
-DEFAULT_NAME = "HelloWorld.java"
+_cnt = {"cnt": 0}
+
+def default_filename():
+    _cnt["cnt"] += 1
+    cnt = _cnt["cnt"]
+    return f"HelloWorld{cnt}.java"
+
+
+def get_default_class():
+    with open(settings.DEFAULT_JAVA_CLASS) as f:
+        data = f.read()
+        return data
 
 
 @login_required
@@ -21,7 +33,8 @@ def main(request):
                                      .latest('mdate'))
         except Algorithm.DoesNotExist:
             algo = Algorithm.objects.create(user=request.user,
-                                        filename=DEFAULT_NAME)
+                                            filename=default_filename(),
+                                            text=get_default_class())
 
     return render(request, "ui/index.html", {
         "algo": algo,
@@ -36,7 +49,8 @@ def main(request):
 def create(request):
     if request.method == "POST":
         algo = Algorithm.objects.create(user=request.user,
-                                        filename=DEFAULT_NAME)
+                                        filename=default_filename(),
+                                        text=get_default_class())
     return HttpResponseRedirect(reverse('index'))
 
 

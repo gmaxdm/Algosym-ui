@@ -4,7 +4,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'style/style.css' %}">
         <form action="{% url 'login' %}" method="post">{% csrf_token %}
              <div class="container">
-                 <span id="head-txt">MHJavaCode</span>
+                 <span id="head-txt">Deutsche Bank Technological Center Algorithm simulator</span>
                  <input type="hidden" name="next" value={% url 'index' %}>
                  <input id="login"  name="username" placeholder="E-mail" class="form" required>
                  <label for="password"></label>

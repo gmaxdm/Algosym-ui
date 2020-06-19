@@ -23,14 +23,14 @@ $(".btn-eye").click(function(){
         $("#E-mail_hint").css("color","#737382");
         $("#login").attr("placeholder", "");
      } else{
-        $("#E-mail_hint").css("color","#44434F"); 
+        $("#E-mail_hint").css("color","#1F1F1F"); 
         $("#login").attr("placeholder", "E-mail");
      }
      if ( !(y == staticInputData.password) ) {
         $("#Password_hint").css("color","#737382");
         $("#password").attr("placeholder", "");
     } else{
-        $("#Password_hint").css("color","#44434F");
+        $("#Password_hint").css("color","#1F1F1F");
         $("#password").attr("placeholder", "Пароль");
     }
 };

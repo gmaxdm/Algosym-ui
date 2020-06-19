@@ -18,6 +18,7 @@ class Algorithm(models.Model):
     filename = models.CharField(max_length=255)
     text = models.TextField()
     metrics = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
     mdate = models.DateTimeField("Modify Date", auto_now=True)
     cdate = models.DateTimeField("Create Date", default=datetime.datetime.now)
 
@@ -27,17 +28,17 @@ class AlgoSym(requests.Session):
     def run(self, user, algorithm):
         self.headers.update({
             "accept": "application/json",
-            "Content-Type": "multipart/form-data",
         })
         data = {
             "userId": settings.ALGOSYM_AUTH[0],
             "userAlgoName": algorithm.filename,
         }
-        files = {"file": (algorithm.filename, algorithm.text)}
+        files = {"code": (algorithm.filename, algorithm.text)}
         resp = self.post(settings.ALGOSYM_URL + "/algoCode",
                          auth=settings.ALGOSYM_AUTH, data=data, files=files)
         logger.debug(resp)
         logger.debug(resp.headers)
+        logger.debug(resp.text)
         try:
             _json = resp.json()
         except JSONDecodeError:

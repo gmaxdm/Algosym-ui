@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'algosymui.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.getenv('ALGO_DATABASE_NAME', 'postgres'),
+        'USER': os.getenv('ALGO_DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('ALGO_DATABASE_PASSWORD', 'postgres'),
+        'HOST': os.getenv('ALGO_DATABASE_HOST', '127.0.0.1'),
+        'PORT': os.getenv('ALGO_DATABASE_PORT', '5432'),
     }
 }
 
@@ -134,8 +134,13 @@ STATICFILES_DIRS = [
 ]
 
 
-ALGOSYM_URL = "https://algosym-gateway-server.herokuapp.com/api"
-ALGOSYM_AUTH = ('test', 'test')
+DEFAULT_JAVA_CLASS = os.path.join(BASE_DIR,
+                                  os.path.dirname(os.path.abspath(__file__)),
+                                  "defaultClass.java")
+
+
+ALGOSYM_URL = os.getenv("ALGO_URL", "https://algosym-gateway-server.herokuapp.com/api")
+ALGOSYM_AUTH = (os.getenv('ALGO_ADMIN', 'admin'), os.getenv('ALGO_PASSWORD', 'admin'))
 
 
 LOGGING = {

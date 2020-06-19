@@ -47,6 +47,13 @@ div {
     height: 100%;
 }
 
+.item a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: 99%;
+}
+
 .sidebar .item {
     display: flex;
     flex-direction: row;
@@ -206,11 +213,15 @@ div {
     flex-direction: row;
     border-bottom: 2px solid #141414;
     position: relative;
-    padding-left: 57px;
     /* overflow: hidden; */
     font-family: monospace;
     font-style: normal;
     font-weight: normal;
+}
+
+#editor {
+    height: 100%;
+    width: 100%;
 }
 
 .line-num {

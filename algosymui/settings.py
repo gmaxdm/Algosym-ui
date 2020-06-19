@@ -133,3 +133,34 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+
+ALGOSYM_URL = "https://algosym-gateway-server.herokuapp.com/api"
+ALGOSYM_AUTH = ('test', 'test')
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+        "message": {
+            "format": "%(asctime)s [%(levelname)s] %(pathname)s:%(lineno)s %(message)s"
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            "formatter": "message",
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+        },
+        "django.db.backends": {
+            "handlers": ["console"],
+            "propagate": False,
+            "level": "ERROR",
+        },
+    },
+}

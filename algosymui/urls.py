@@ -20,16 +20,22 @@ from django.urls import path
 from django.contrib import admin
 
 from authuser.views import RegisterView
+from ui.views import main, create, remove, save, change_name, run
 
 
 urlpatterns = [
-    path('', login_required(TemplateView.as_view(template_name='ui/index.html')),
-         name='index'),
     path('login/', auth_views.LoginView.as_view(template_name="auth/login.html"),
          name='login'),
     path('register/', RegisterView.as_view(),
          name='register'),
     path('logout/', auth_views.LogoutView.as_view(next_page="/"), name="logout"),
+
+    path('', main, name='index'),
+    path('create/', create, name="algo-create"),
+    path('delete/', remove, name="algo-remove"),
+    path('save/', save, name="algo-save"),
+    path('run/', run, name="algo-run"),
+    path('change/name/', change_name, name="algo-change-name"),
 
     path('admin/', admin.site.urls),
 ]

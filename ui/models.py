@@ -8,9 +8,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-http.client.HTTPConnection.debuglevel = 1
+#http.client.HTTPConnection.debuglevel = 1
 
 
 class Algorithm(models.Model):
@@ -50,9 +50,6 @@ class AlgoSym(requests.Session):
         files = {"code": (algorithm.filename, algorithm.text)}
         resp = self.post(settings.ALGOSYM_URL + "/algoCode",
                          auth=settings.ALGOSYM_AUTH, data=data, files=files)
-        logger.debug(resp)
-        logger.debug(resp.headers)
-        logger.debug(resp.text)
 
         return self.__json(resp)
 

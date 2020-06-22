@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
 from authuser.forms import NewUserForm
+from authuser.models import Logins
 
 
 class LoginRequired(LoginRequiredMixin):
@@ -37,6 +38,7 @@ class RegisterView(CreateView):
                 user = User.objects.create_user(email,
                                                 email=email,
                                                 password=data['password2'])
+                Logins.objects.create(user=user, email=email, permit="user")
                 auth_login(self.request, user)
                 messages.success(self.request, "Вы успешно зарегистрировались на сайте!")
                 return HttpResponseRedirect(reverse("index"))

@@ -40,6 +40,7 @@
                 <form id="fremove" action="{% url 'algo-remove' %}" method="POST" style="visibility: hidden;">{% csrf_token %}<input type="hidden" name="id" value="{{ algo.id }}"></form>
                 <div class="title">
                     <input id="name-input" class="title-input" value="{{ algo.filename }}" onclick="selectText()" />
+                    {% if user.is_active %}
                     <span id="algo-run" class="run-btn">
                         <svg id="run-btn-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 0h48v48H0z" fill="none"/>
@@ -47,6 +48,7 @@
                         </svg>
                         <span>RUN</span>
                     </span>
+                    {% endif %}
                     <span id="algo-remove" class="delete-btn">
                         <svg id="delete-btn-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100">
                             <path d="M91.3,15.1H69.3v-4.8c0-3.4-3.1-5.9-7-5.9H37.6c-3.9,0-7,2.6-7,5.9v4.8H8.7c-2.2,0-3.9,1.7-3.9,3.9s1.7,3.9,3.9,3.9h4.8  l4.8,60.1c0.1,7.1,5.8,12.8,12.9,12.8h37.5c7.1,0,12.8-5.7,12.9-12.8l4.9-60h4.8c2.2,0,3.9-1.7,3.9-3.9S93.5,15.1,91.3,15.1z   M38.4,12.1h23.2v3H38.4V12.1z M39.9,74.9h-0.1c-2.1,0-3.7-1.7-3.9-3.7l-1.4-31.5c-0.1-2.2,1.5-4,3.7-4h0.1c2.1,0,3.7,1.7,3.9,3.7  l1.4,31.5C43.7,73,42.1,74.8,39.9,74.9z M64.1,71.1c-0.1,2.1-1.8,3.7-3.9,3.7h-0.1c-2.2-0.1-3.7-1.9-3.7-4l1.4-31.5  c0.1-2.1,1.8-3.7,3.9-3.7h0.1c2.2,0.1,3.7,1.9,3.7,4L64.1,71.1z"/>
@@ -57,10 +59,11 @@
                 <div class="code-area-container"><div id="editor" style="display: none;">{{ algo.text }}</div></div>
                 <div class="output-container">
                     <div id="output" class="output">
+                        {% if algo.status %}{{ algo.status }}{% endif %}
                     </div>
                     <div class="score-container">
                         <span>You gained</span>
-                        <span class="scores">1,012,230</span>
+                        <span id="metrics" class="scores"></span>
                     </div>
                 </div>
             </div>
@@ -88,13 +91,25 @@
         input.focus();
         input.select();
     }
+    function round(num) {
+        return Math.round((num + 0.0001) * 100) / 100;
+    }
+
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/java");
     editor.session.setUseSoftTabs(true);
 
+    var _RUN = {
+        id: "{{ algo.run_id }}",
+        status: "{{ algo.status }}",
+        metrics: round(Number({{ algo.metrics|default:0 }}))
+    };
+    var _UPDATE = null;
+
     $(function() {
         $('#editor').fadeIn("slow");
+        $('#metrics').text(_RUN.metrics);
 
         var initMD5 = MD5(editor.getValue());
 
@@ -110,15 +125,67 @@
                 $('#fremove').submit();
             }
         });
-        $('#algo-run').on("click", function() {
-            $.post("{% url 'algo-run' %}", {
-                id: {{ algo.id }},
-            }, function(data) {
-                if(data.data && data.data.message) {
-                    $("#output").append("<p>"+ data.data.message +"</p>")
+
+        function is_finished(status) {
+            var _st = status.toLowerCase();
+            return !_st || _st === "successfully_executed" || _st === "compilation_failed" || _st === "execution_failed";
+        }
+
+        {% if user.is_active %}
+        function run(action) {
+            var data = {
+                id: {{ algo.id }}
+            };
+            if(action) {
+                data.action = action;
+            } else {
+                // no need to run the same algo twice:
+                if(!is_finished(_RUN.status)) data.action = "status";
+            }
+
+            $.post("{% url 'algo-run' %}", data, function(r) {
+                if(r.data) {
+                    var _item = r.data.info || r.data.message;
+                    if(_item) {
+                        $("#output").append("<p>"+ _item +"</p>");
+                    }
+                    /* uploaded successfully */
+                    if(r.data.id) {
+                        _RUN.id = r.data.id;
+                        update();
+                    } else if(r.data.status) {
+                        if(_RUN.status !== r.data.status) {
+                            _RUN.status = r.data.status;
+                            $("#output").append("<p>"+ r.data.status +"</p>");
+                        }
+                        if(r.data.metrics && _RUN.metrics !== r.data.metrics) {
+                            _RUN.metrics = r.data.metrics;
+                            var _num = round(Number(r.data.metrics));
+                            if(_num) {
+                                $('#metrics').text(_num);
+                            }
+                        }
+
+                        var _status = _RUN.status.toLowerCase();
+                        if(_status === "successfully_executed") {
+                            window.clearTimeout(_UPDATE);
+                        } else if(_status === "compilation_failed" || _status === "execution_failed") {
+                            window.clearTimeout(_UPDATE);
+                            $("#output").append("<p>"+ r.data.errorTrace +"</p>");
+                        }
+                    }
                 }
-            })
-        });
+            }, "json");
+        }
+
+        function update() {
+            run("status");
+            _UPDATE = window.setTimeout(update, 10000);
+        }
+
+        $('#algo-run').on("click", function() {run();});
+        {% endif %}
+
         $('#name-input').on("keypress", function(e) {
             if(e.which === 13) {
                 var _val = $(this).val();
@@ -130,7 +197,7 @@
                         if(data.ok) {
                             $('#name{{ algo.id }}').text(_val);
                         }
-                    });
+                    }, "json");
                 }
             }
         });
@@ -143,11 +210,11 @@
                     text: _text
                 }, function(data) {
                     initMD5 = MD5(_text);
-                });
+                }, "json");
             }
-            window.setTimeout(autosave , 2000);
+            window.setTimeout(autosave, 2000);
         };
-        window.setTimeout(autosave , 2000);
+        window.setTimeout(autosave, 2000);
     });
 </script>
 {% endblock %}

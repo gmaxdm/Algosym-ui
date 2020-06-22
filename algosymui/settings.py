@@ -139,7 +139,7 @@ DEFAULT_JAVA_CLASS = os.path.join(BASE_DIR,
                                   "defaultClass.java")
 
 
-ALGOSYM_URL = os.getenv("ALGO_URL", "https://algosym-gateway-server.herokuapp.com/api")
+ALGOSYM_URL = os.getenv("ALGO_URL", "https://algosym-gateway-server.herokuapp.com")
 ALGOSYM_AUTH = (os.getenv('ALGO_ADMIN', 'admin'), os.getenv('ALGO_PASSWORD', 'admin'))
 
 

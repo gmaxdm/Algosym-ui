@@ -17,20 +17,34 @@ class Algorithm(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     filename = models.CharField(max_length=255)
     text = models.TextField()
-    metrics = models.CharField(max_length=100)
-    status = models.CharField(max_length=100)
+    metrics = models.CharField(max_length=100, default="")
+    status = models.CharField(max_length=100, default="")
+    run_id = models.CharField(max_length=100, default="")
     mdate = models.DateTimeField("Modify Date", auto_now=True)
     cdate = models.DateTimeField("Create Date", default=datetime.datetime.now)
 
 
 class AlgoSym(requests.Session):
 
-    def run(self, user, algorithm):
+    def prepare(self):
         self.headers.update({
             "accept": "application/json",
         })
+
+    @staticmethod
+    def __json(resp):
+        _json = None
+        if resp.status_code == 200:
+            try:
+                _json = resp.json()
+            except JSONDecodeError:
+                pass
+        return _json
+
+    def run(self, user, algorithm):
+        self.prepare()
         data = {
-            "userId": settings.ALGOSYM_AUTH[0],
+            "userId": user.id,
             "userAlgoName": algorithm.filename,
         }
         files = {"code": (algorithm.filename, algorithm.text)}
@@ -39,9 +53,13 @@ class AlgoSym(requests.Session):
         logger.debug(resp)
         logger.debug(resp.headers)
         logger.debug(resp.text)
-        try:
-            _json = resp.json()
-        except JSONDecodeError:
-            _json = None
-        return _json
+
+        return self.__json(resp)
+
+    def status(self, user, algorithm):
+        self.prepare()
+        resp = self.get(settings.ALGOSYM_URL + "/algoStatus/" + algorithm.run_id,
+                        auth=settings.ALGOSYM_AUTH)
+
+        return self.__json(resp)
 

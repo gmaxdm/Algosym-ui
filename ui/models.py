@@ -8,9 +8,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 
-#logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-#http.client.HTTPConnection.debuglevel = 1
+if settings.DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger(__name__)
+    http.client.HTTPConnection.debuglevel = 1
 
 
 class Algorithm(models.Model):
@@ -39,6 +40,8 @@ class AlgoSym(requests.Session):
                 _json = resp.json()
             except JSONDecodeError:
                 pass
+        else:
+            _json = {"error": resp.text, "code": resp.status_code}
         return _json
 
     def run(self, user, algorithm):

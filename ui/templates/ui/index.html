@@ -173,6 +173,8 @@
                             window.clearTimeout(_UPDATE);
                             $("#output").append("<p>"+ r.data.errorTrace +"</p>");
                         }
+                    } else if(r.data.error) {
+                        $("#output").append("<p>"+ r.data.error +"</p>");
                     }
                 }
             }, "json");

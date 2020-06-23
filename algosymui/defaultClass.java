@@ -31,7 +31,7 @@ public class TradingAlgorithmImpl implements TradingAlgorithm {
                 tick.getCurrencyPair(),
                 currencyRate.toString()));
 
-        / put you trading logic here /
+        /* put you trading logic here */
 
         if (r.nextBoolean()) { // imitation of favourable conditions
             double stopLoss = 0.001 * r.nextDouble(); // imitation of user choice of stop-loss level

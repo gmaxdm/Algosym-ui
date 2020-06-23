@@ -104,8 +104,9 @@ def run(request):
                 if data:
                     algo.save()
             return JsonResponse({"data": data})
-        except (KeyError, Algorithm.DoesNotExist) as err:
+        except Exception as err:
             logger.exception(err)
+            return JsonResponse({"error": str(err)})
     return JsonResponse({"error": "algo is not defined"})
 
 

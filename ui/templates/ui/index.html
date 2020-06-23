@@ -140,7 +140,11 @@
                 data.action = action;
             } else {
                 // no need to run the same algo twice:
-                if(!is_finished(_RUN.status)) data.action = "status";
+                if(is_finished(_RUN.status)) {
+                    $('#output').html('');
+                } else {
+                    data.action = "status";
+                }
             }
 
             $.post("{% url 'algo-run' %}", data, function(r) {

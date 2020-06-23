@@ -47,7 +47,7 @@ class AlgoSym(requests.Session):
     def run(self, user, algorithm):
         self.prepare()
         data = {
-            "userId": user.id,
+            "userId": user.email,
             "userAlgoName": algorithm.filename,
         }
         files = {"code": (algorithm.filename, algorithm.text)}
